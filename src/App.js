@@ -17,40 +17,41 @@ class App extends React.Component {
 
   componentDidMount() {
     axios.get(`https://api.imgflip.com/get_memes`)
-    .then(res => {
-      const apiData = res.data;
-      this.setState({ 
-        apiData : apiData.data,
-        loading : false
-      }, () => {
-        this.getRandomImg(this.state.apiData);
-        console.log(this.state.apiData.memes);
-        console.log(this.state.loading);
-        
-      });
-    })
+      .then(res => {
+        const apiData = res.data;
+        this.setState({
+          apiData: apiData.data
+        }, () => {
+          this.getRandomImg(this.state.apiData);
+          console.log(this.state.apiData.memes);
+          console.log(this.state.loading);
+
+        });
+      })
   }
 
   handleChange = (event) => {
     console.log(event.target.value);
-    const {name, value} = event.target;
+    const { name, value } = event.target;
     console.log(name);
     console.log(value);
     this.setState({ [name]: value })
-    
   }
 
   getRandomImg = (apiData) => {
     const memes = apiData.memes;
     let x, j, i;
     for (i = memes.length - 1; i > 0; i--) {
-        j = Math.floor(Math.random() * (i + 1));
-        x = memes[i];
-        memes[i] = memes[j];
-        memes[j] = x;
+      j = Math.floor(Math.random() * (i + 1));
+      x = memes[i];
+      memes[i] = memes[j];
+      memes[j] = x;
     }
     this.setState({
-      apiData : memes
+      apiData: memes,
+      loading: false
+    }, () => {
+      console.log(this.state.apiData);
     })
     return apiData;
   }
@@ -58,33 +59,33 @@ class App extends React.Component {
   render() {
     return (
       <>
-        <Header/> 
+        <Header />
         {/* <img src={this.state.loading ? this.state.apiData.data.memes[0].url : null} /> */}
         <div>
-                <form className="meme-form">
-                    <input 
-                        type="text"
-                        name="topText"
-                        placeholder="Top Text"
-                        value={this.state.topText}
-                        onChange={this.handleChange}
-                    /> 
-                    <input 
-                        type="text"
-                        name="bottomText"
-                        placeholder="Bottom Text"
-                        value={this.state.bottomText}
-                        onChange={this.handleChange}
-                    /> 
-                
-                    <button>Gen</button>
-                </form>
-                <div className="meme">
-                    {/* <img src={this.state.loading ?  null : this.state.apiData.memes[0].url} alt="" /> */}
-                    <h2 className="top">{this.state.topText}</h2>
-                    <h2 className="bottom">{this.state.bottomText}</h2>
-                </div>
-            </div>
+          <form className="meme-form">
+            <input
+              type="text"
+              name="topText"
+              placeholder="Top Text"
+              value={this.state.topText}
+              onChange={this.handleChange}
+            />
+            <input
+              type="text"
+              name="bottomText"
+              placeholder="Bottom Text"
+              value={this.state.bottomText}
+              onChange={this.handleChange}
+            />
+
+            <button>Gen</button>
+          </form>
+          <div className="meme">
+            <img src={this.state.loading ?  null : this.state.apiData[0].url} alt="" />
+            <h2 className="top">{this.state.topText}</h2>
+            <h2 className="bottom">{this.state.bottomText}</h2>
+          </div>
+        </div>
       </>
     )
   }
