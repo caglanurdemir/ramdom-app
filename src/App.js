@@ -11,7 +11,7 @@ class App extends React.Component {
       bottomText: "",
       randomImg: "http://i.imgflip.com/1bij.jpg",
       apiData: [],
-      loading: false
+      loading: true
     };
   }
 
@@ -20,10 +20,11 @@ class App extends React.Component {
     .then(res => {
       const apiData = res.data;
       this.setState({ 
-        apiData : apiData,
-        loading : true
+        apiData : apiData.data,
+        loading : false
       }, () => {
-        console.log(this.state.apiData.data.memes);
+        this.getRandomImg(this.state.apiData);
+        console.log(this.state.apiData.memes);
         console.log(this.state.loading);
         
       });
@@ -37,6 +38,21 @@ class App extends React.Component {
     console.log(value);
     this.setState({ [name]: value })
     
+  }
+
+  getRandomImg = (apiData) => {
+    const memes = apiData.memes;
+    let x, j, i;
+    for (i = memes.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = memes[i];
+        memes[i] = memes[j];
+        memes[j] = x;
+    }
+    this.setState({
+      apiData : memes
+    })
+    return apiData;
   }
 
   render() {
@@ -64,7 +80,7 @@ class App extends React.Component {
                     <button>Gen</button>
                 </form>
                 <div className="meme">
-                    <img src={this.state.loading ? this.state.apiData.data.memes[1].url : null} alt="" />
+                    {/* <img src={this.state.loading ?  null : this.state.apiData.memes[0].url} alt="" /> */}
                     <h2 className="top">{this.state.topText}</h2>
                     <h2 className="bottom">{this.state.bottomText}</h2>
                 </div>
