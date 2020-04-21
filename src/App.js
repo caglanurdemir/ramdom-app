@@ -1,12 +1,11 @@
 import React from 'react';
 import './App.css';
-import MemeGenerator from './MemeGenerator';
 import Header from './Header';
 import axios from 'axios';
 
 class App extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       topText: "",
       bottomText: "",
@@ -21,7 +20,7 @@ class App extends React.Component {
     .then(res => {
       const apiData = res.data;
       this.setState({ 
-        apiData,
+        apiData : apiData,
         loading : true
       }, () => {
         console.log(this.state.apiData.data.memes);
@@ -31,9 +30,14 @@ class App extends React.Component {
     })
   }
 
-  handleChange(event) {
-    console.log("Working!")
-}
+  handleChange = (event) => {
+    console.log(event.target.value);
+    const {name, value} = event.target;
+    console.log(name);
+    console.log(value);
+    this.setState({ [name]: value })
+    
+  }
 
   render() {
     return (
@@ -60,9 +64,9 @@ class App extends React.Component {
                     <button>Gen</button>
                 </form>
                 <div className="meme">
-                    <img src={this.state.loading ? this.state.apiData.data.memes[0].url : null} alt="" />
-                    {/* <h2 className="top">{this.state.topText}</h2>
-                    <h2 className="bottom">{this.state.bottomText}</h2> */}
+                    <img src={this.state.loading ? this.state.apiData.data.memes[1].url : null} alt="" />
+                    <h2 className="top">{this.state.topText}</h2>
+                    <h2 className="bottom">{this.state.bottomText}</h2>
                 </div>
             </div>
       </>
