@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import Header from './Header';
 import axios from 'axios';
 
 class App extends React.Component {
@@ -49,7 +48,8 @@ class App extends React.Component {
     }
     this.setState({
       apiData: memes,
-      loading: false
+      loading: false,
+      randomImg: memes[0].url
     }, () => {
       console.log(this.state.apiData);
     })
@@ -59,8 +59,6 @@ class App extends React.Component {
   render() {
     return (
       <>
-        <Header />
-        {/* <img src={this.state.loading ? this.state.apiData.data.memes[0].url : null} /> */}
         <div>
           <form className="meme-form">
             <input
@@ -77,11 +75,10 @@ class App extends React.Component {
               value={this.state.bottomText}
               onChange={this.handleChange}
             />
-
-            <button>Gen</button>
+            <button>Save</button>
           </form>
           <div className="meme">
-            <img src={this.state.loading ?  null : this.state.apiData[0].url} alt="" />
+            <img src={this.state.loading ?  null : this.state.randomImg} alt="" />
             <h2 className="top">{this.state.topText}</h2>
             <h2 className="bottom">{this.state.bottomText}</h2>
           </div>
