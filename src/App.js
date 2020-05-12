@@ -2,6 +2,41 @@ import React from 'react';
 import './App.css';
 import axios from 'axios';
 
+import { combineReducers, createStore } from 'redux';
+import { Provider } from 'react-redux';
+
+
+function newReducer(state = [], action) {
+  switch (action.type) {
+    case "UPDATE_IMG":
+      return [
+        ...state,
+        {
+          topText: "",
+          bottomText: "",
+          randomImg: "http://i.imgflip.com/1bij.jpg",
+          apiData: [],
+          loading: false
+        }
+      ];
+    default:
+      return state;
+  }
+}
+
+const updateImgDatas = {
+  type: "UPDATE_IMG",
+  loading: false
+}
+
+const store = createStore(newReducer);
+store.dispatch(updateImgDatas);
+// store.dispatch({
+//   type: "UPDATE_IMG",
+//   id: 0
+// });
+console.log(store.getState());
+
 class App extends React.Component {
   constructor(props) {
     super(props);
